@@ -13,11 +13,19 @@ class Formidable:
         field_name = field['name']
         setattr(self, field_name, {})
         self.__dict__[field_name]['type'] = field['type']
-        print(field['rules'])
-        self.__dict__[field_name]['rules'] = field['rules']
+        if 'rules' in field:
+            self.__dict__[field_name]['rules'] = field['rules']
 
     def add_validator(self, name, func):
         self.validators[name] = func
+
+    def load_data(self, data):
+        for field in data:
+            keys = field.keys()
+            for name in keys:
+                field_name = name
+                value = field[name]
+            self.__dict__[field_name]['data'] = value
 
 
 def field_must_be_present(field, value=None, message=None, data=None):
