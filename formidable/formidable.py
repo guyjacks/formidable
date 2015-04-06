@@ -1,17 +1,27 @@
 class Formidable:
 
     def __init__(self, config=None):
+        self.validators = {}
         if config:
             self.configure(config)
 
     def configure(self, config):
         for field in config:
-            field_name = field['name']
-            setattr(self, field_name, {})
-            self.__dict__[field_name]['type'] = field['type']
-            self.__dict__[field_name]['must_be_present'] = \
-                field['must_be_present']
-            self.__dict__[field_name]['rules'] = field['rules']
+            self.add_field(field)
+
+    def add_field(self, field):
+        field_name = field['name']
+        setattr(self, field_name, {})
+        self.__dict__[field_name]['type'] = field['type']
+        print(field['rules'])
+        self.__dict__[field_name]['rules'] = field['rules']
+
+    def add_validator(self, name, func):
+        self.validators[name] = func
+
+
+def field_must_be_present(field, value=None, message=None, data=None):
+    pass
 
 
 def value_is_required(field, value, message=None, data=None):
